@@ -1,0 +1,9 @@
+configs/local/
+logs/
+outputs/
+data/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+.DS_Store

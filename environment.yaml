@@ -1,0 +1,11 @@
+name: vln-alfred
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - uv
+  - pyyaml
+  - nodejs  # Often useful for AI2-THOR/Web visualizations
+  - git

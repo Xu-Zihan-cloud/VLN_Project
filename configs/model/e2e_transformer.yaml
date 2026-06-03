@@ -1,0 +1,19 @@
+# configs/model/e2e_transformer.yaml
+
+_target_: src.models.e2e_module.EndToEndVLNModule
+
+# Architecture parameters
+d_model: 512
+nhead: 8
+num_layers: 6
+dim_feedforward: 2048
+dropout: 0.1
+
+# Vocabulary
+vocab_size: 5000 # To be updated based on dataset tokenizer
+action_vocab_size: 50 # ALFRED action space
+
+# Optimization
+lr: 1e-4
+weight_decay: 1e-5
+warmup_steps: 1000

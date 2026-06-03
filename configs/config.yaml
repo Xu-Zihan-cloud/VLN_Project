@@ -1,0 +1,27 @@
+# configs/config.yaml
+
+defaults:
+  - _self_
+  - data: alfworld
+  - model: e2e_transformer
+  - trainer: default
+
+  # experiment configs allow for version control of specific hyperparameters
+  - experiment: null
+
+  # optional local config for machine-specific paths
+  - local: default
+
+# task name, used for logging and checkpointing
+task_name: "vln_alfred"
+
+# path to root directory
+paths:
+  root_dir: ${hydra:runtime.cwd}
+  data_dir: ${paths.root_dir}/data/
+  log_dir: ${paths.root_dir}/logs/
+  output_dir: ${hydra:runtime.output_dir}
+  work_dir: ${hydra:runtime.cwd}
+
+# seed for random number generators in pytorch, numpy and python.random
+seed: 42
