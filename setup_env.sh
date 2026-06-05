@@ -17,6 +17,10 @@ conda env create -f environment.yaml
 echo "=== Step 3: Activating environment ==="
 conda activate vln-alfred
 
+echo "=== Step 3.5: Provisioning build tools (make/gcc) inside conda ==="
+# Install compilation tools directly inside the env to support building source wheels like jericho without sudo
+conda install -c conda-forge make gxx_linux-64 -y
+
 echo "=== Step 4: Installing CPU-Optimized Dependencies via UV ==="
 # Note: Ensure system-level 'xvfb' is installed: sudo apt-get install -y xvfb
 
