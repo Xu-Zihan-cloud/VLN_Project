@@ -134,11 +134,17 @@ class EndToEndVLNModule(LightningModule):
         
         self.val_loss(loss)
         self.log("val/loss", self.val_loss, on_epoch=True, prog_bar=True, sync_dist=True)
+        return loss
+
+    def test_step(self, batch, batch_idx):
+        action_logits = self(batch)
+        loss = self.criterion(
+            action_logits.view(-1, self.hparams.action_vocab_size),
+            batch["action_labels"].view(-1)
+        )
         
-        # In a real VLN validation, we would run the environment simulator here
-        # to calculate actual SR and SPL. For BC training validation, we track loss.
-        # SR/SPL would be updated during full evaluation episodes.
-        
+        # Reuse val metrics or log separately for test
+        self.log("test/loss", loss, on_epoch=True, prog_bar=True, sync_dist=True)
         return loss
 
     def configure_optimizers(self):
