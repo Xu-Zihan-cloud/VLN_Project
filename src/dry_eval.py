@@ -42,14 +42,21 @@ def dry_evaluate(cfg: DictConfig):
 
     for i in pbar:
         sample = val_set[i]
-        instruction = sample.get("raw_instr", "Bring the apple to the table")
+        instruction = sample.get("raw_instr", "Complete the task.")
         
-        # In dry run, we use the expert's plan length to mock a scene graph
-        # This keeps the test clean and focused on instruction parsing
+        # UI Polish for Demo
+        print(f"\n\n{'='*20} Episode {i+1} {'='*20}")
+        print(f"INPUT INSTRUCTION: {instruction}")
+        print("-" * 50)
+        
+        # In dry run, we use a standard scene graph
         mock_scene_graph = ["mug_1", "apple_1", "microwave_1", "fridge_1", "sink_1", "table_1", "cabinet_1"]
         
         # Let LLM Plan
+        print("Robot Brain is thinking...", end="\r")
         plan = agent.plan(instruction, mock_scene_graph)
+        
+        print(f"GENERATED PLAN: {json.dumps(plan, indent=2)}")
         
         results["total"] += 1
         if plan and isinstance(plan, list) and len(plan) > 0:
