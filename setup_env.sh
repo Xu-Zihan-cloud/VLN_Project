@@ -8,7 +8,11 @@ if [ -f "$CONDA_BASE/etc/profile.d/conda.sh" ]; then
 fi
 
 echo "=== Step 2: Creating Conda environment 'vln-alfred' ==="
-conda env create -f environment.yaml --force
+# Cleanly remove the environment if it already exists to avoid conflicts
+conda env remove -n vln-alfred -y 2>/dev/null || true
+
+# Correctly create the environment from the yaml file
+conda env create -f environment.yaml
 
 echo "=== Step 3: Activating environment ==="
 conda activate vln-alfred
