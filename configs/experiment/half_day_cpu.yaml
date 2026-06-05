@@ -1,0 +1,29 @@
+# @package _global_
+
+# to execute this experiment run:
+# python src/train.py experiment=half_day_cpu
+
+defaults:
+  - override /data: alfworld
+  - override /model: e2e_transformer
+  - override /trainer: default
+
+# all parameters below will be merged with default configurations
+# and can be used to override vars in train.py
+
+task_name: "vln_half_day_cpu"
+
+trainer:
+  max_epochs: 40
+  precision: bf16-mixed
+  limit_train_batches: 0.5
+  limit_val_batches: 0.5
+
+model:
+  d_model: 256
+  nhead: 4
+  num_layers: 3
+  dim_feedforward: 1024
+
+data:
+  num_workers: 32
