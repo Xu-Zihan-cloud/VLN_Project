@@ -3,28 +3,28 @@
 
 set -e
 
-DATA_DIR="./data/alfworld"
-mkdir -p $DATA_DIR
-
-echo "=== Step 1: Downloading Expert Trajectories (JSONs) ==="
-# Using the official DFKI mirror which is the primary source for ALFRED
-if [ ! -d "$DATA_DIR/train" ]; then
-    echo "Downloading JSON trajectories from DFKI mirror..."
-    wget -c -O alfworld_jsons.7z http://madm.dfki.de/files/ieee-vln/json_2.1.0.7z
-    
-    echo "Extracting data... (This requires p7zip-full)"
-    7z x alfworld_jsons.7z -o$DATA_DIR
-    rm alfworld_jsons.7z
-else
-    echo "JSON trajectories already exist. Skipping Step 1."
+# Ensure the conda environment is active to use alfworld-download
+CONDA_BASE=$(conda info --base 2>/dev/null || echo "$HOME/miniconda3")
+if [ -f "$CONDA_BASE/etc/profile.d/conda.sh" ]; then
+    source "$CONDA_BASE/etc/profile.d/conda.sh"
+    conda activate vln-alfred
 fi
 
-echo "=== Step 2: Visual Features Note ==="
-echo "To run training, you also need pre-computed ResNet features."
-echo "You can download them from the same mirror if needed:"
-echo "URL: http://madm.dfki.de/files/ieee-vln/full_2.1.0.7z (Approx 50GB)"
+echo "=== Step 1: Downloading AlfWorld Trajectories via CLI ==="
+# Using the official alfworld-download tool is the most reliable method
+# It will download the JSONs and PDDL files needed for the tasks.
 
-echo "=== Step 3: Verifying Data Structure ==="
-ls -l $DATA_DIR
+# Set the environment variable for alfworld data
+export ALFWORLD_DATA="$(pwd)/data/alfworld"
+mkdir -p $ALFWORLD_DATA
 
-echo "=== [SUCCESS] Data preparation script completed! ==="
+echo "Using alfworld-download to retrieve JSON trajectories..."
+# --skip-vision because full vision data is huge; we only want JSONs for now
+alfworld-download --skip-vision
+
+echo "=== Step 2: Verification ==="
+echo "Data has been downloaded to: $ALFWORLD_DATA"
+ls -R $ALFWORLD_DATA | head -n 20
+
+echo "=== [SUCCESS] Official AlfWorld data preparation completed! ==="
+echo "To run training, ensure your config data_dir points to $ALFWORLD_DATA"
