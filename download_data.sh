@@ -7,21 +7,22 @@ DATA_DIR="./data/alfworld"
 mkdir -p $DATA_DIR
 
 echo "=== Step 1: Downloading Expert Trajectories (JSONs) ==="
-# Using a more stable AWS S3 mirror for ALFRED data
+# Using the official DFKI mirror which is the primary source for ALFRED
 if [ ! -d "$DATA_DIR/train" ]; then
-    echo "Downloading JSON trajectories..."
-    wget -O alfworld_jsons.7z https://ai2-thor-public.s3.amazonaws.com/alfred/json_2.1.0.7z
+    echo "Downloading JSON trajectories from DFKI mirror..."
+    wget -c -O alfworld_jsons.7z http://madm.dfki.de/files/ieee-vln/json_2.1.0.7z
     
-    echo "Please ensure you have 7z installed: sudo apt-get install p7zip-full"
+    echo "Extracting data... (This requires p7zip-full)"
     7z x alfworld_jsons.7z -o$DATA_DIR
     rm alfworld_jsons.7z
 else
     echo "JSON trajectories already exist. Skipping Step 1."
 fi
 
-echo "=== Step 2: Downloading Pre-computed ResNet Features ==="
-echo "Note: Full visual features are several GBs. Please download them manually if needed."
-# Standard features location: https://ai2-thor-public.s3.amazonaws.com/alfred/full_2.1.0.7z
+echo "=== Step 2: Visual Features Note ==="
+echo "To run training, you also need pre-computed ResNet features."
+echo "You can download them from the same mirror if needed:"
+echo "URL: http://madm.dfki.de/files/ieee-vln/full_2.1.0.7z (Approx 50GB)"
 
 echo "=== Step 3: Verifying Data Structure ==="
 ls -l $DATA_DIR
