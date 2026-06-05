@@ -2,7 +2,7 @@
 
 _target_: src.data.alfworld_datamodule.AlfWorldDataModule
 
-data_dir: ${paths.data_dir}/alfworld
+data_dir: ${paths.data_dir}/alfworld/json_2.1.1
 batch_size: 16 # per GPU (Total 128 with 8 GPUs)
 num_workers: 32
 pin_memory: False
