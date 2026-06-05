@@ -9,8 +9,8 @@ mkdir -p $DATA_DIR
 echo "=== Step 1: Downloading Expert Trajectories (JSONs) ==="
 # These are the small JSON files containing instructions and action labels
 # URL is illustrative; replace with the official ALFRED repository release links
-if [ ! -d "$DATA_DIR/train" ]; then
-    wget -O alfworld_jsons.zip https://github.com/askforalfred/alfred/raw/master/data/json_2.1.0.7z 
+# Use proxy to avoid timeout issues
+    wget -O alfworld_jsons.zip https://ghfast.top/https://github.com/askforalfred/alfred/raw/master/data/json_2.1.0.7z 
     # Note: Requires 7zip/unzip depending on source
     echo "Please ensure you have 7z installed: sudo apt-get install p7zip-full"
     7z x alfworld_jsons.zip -o$DATA_DIR
