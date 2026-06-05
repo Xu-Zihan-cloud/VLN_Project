@@ -6,7 +6,7 @@ default_root_dir: ${paths.output_dir}
 
 # Training duration
 min_epochs: 1
-max_epochs: 20
+max_epochs: 40
 
 # Hardware acceleration
 accelerator: cpu
@@ -16,8 +16,8 @@ strategy: auto
 # Precision (BF16 is highly optimized for modern EPYC/AVX-512)
 precision: bf16-mixed
 
-# Limit data per epoch for faster iterations
-limit_train_batches: 0.2
+# Balance: Higher coverage within 24h window
+limit_train_batches: 0.5
 limit_val_batches: 0.5
 
 # Logging and Checkpointing
