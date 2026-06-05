@@ -31,6 +31,6 @@ uv pip install torch torchvision torchaudio --index-url https://download.pytorch
 uv pip install pytorch-lightning hydra-core hydra-colorlog hydra-optuna-sweeper wandb tensorboard
 
 # Install Simulation, LLM & Headless Tools
-uv pip install ai2thor alfworld pyvirtualdisplay opencv-python scikit-image transformers py-trees networkx openai
+uv pip install ai2thor alfworld pyvirtualdisplay opencv-python scikit-image transformers py-trees networkx openai pyrootutils
 
 echo "=== [SUCCESS] CPU-optimized setup completed! ==="
