@@ -36,7 +36,8 @@ def evaluate(cfg: DictConfig):
     
     logger.info(f"Loaded {len(val_set)} validation episodes. Starting simulator...")
 
-    # Initialize AI2-THOR Controller with CloudRendering
+    # Initialize AI2-THOR Controller with CloudRendering and Debugging
+    logger.info("Initializing AI2-THOR Controller (this may take a few minutes on first run)...")
     try:
         controller = Controller(
             agentMode="arm", 
@@ -45,8 +46,9 @@ def evaluate(cfg: DictConfig):
             renderInstanceSegmentation=True,
             width=600,
             height=600,
-            # CloudRendering avoids the need for Xvfb/Display
-            platform="CloudRendering" 
+            platform="CloudRendering",
+            # Enable internal logs to see where it hangs
+            verbose=True 
         )
     except Exception as e:
         logger.warning(f"CloudRendering failed, trying default platform: {e}")
