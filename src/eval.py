@@ -29,15 +29,14 @@ def evaluate(cfg: DictConfig):
     agent = hydra.utils.instantiate(cfg.model)
 
     # Init Lightning DataModule
+    logger.info("Initializing DataModule...")
     datamodule = hydra.utils.instantiate(cfg.data)
-    datamodule.setup() 
+    datamodule.setup(stage="test") # ONLY load validation data
     val_set = datamodule.val_seen_set
     
-    if len(val_set) == 0:
-        logger.error("No validation data found. Please run download_data.sh first.")
-        return
+    logger.info(f"Loaded {len(val_set)} validation episodes. Starting simulator...")
 
-    # Initialize AI2-THOR Controller with CloudRendering (No Xvfb needed)
+    # Initialize AI2-THOR Controller with CloudRendering
     try:
         controller = Controller(
             agentMode="arm", 

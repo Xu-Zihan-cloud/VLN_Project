@@ -155,7 +155,7 @@ class AlfWorldDataModule(LightningDataModule):
 
     def setup(self, stage: Optional[str] = None):
         """Load datasets for each stage."""
-        if stage == "fit" or stage is None:
+        if stage == "fit":
             self.train_set = AlfWorldDataset(
                 data_path=self.hparams.data_dir,
                 split="train",
@@ -170,6 +170,13 @@ class AlfWorldDataModule(LightningDataModule):
             )
 
         if stage == "test" or stage is None:
+            # For eval.py, we prioritize these splits
+            self.val_seen_set = AlfWorldDataset(
+                data_path=self.hparams.data_dir,
+                split="valid_seen",
+                max_seq_len=self.hparams.max_seq_len,
+                max_instr_len=self.hparams.max_instr_len
+            )
             self.val_unseen_set = AlfWorldDataset(
                 data_path=self.hparams.data_dir,
                 split="valid_unseen",
