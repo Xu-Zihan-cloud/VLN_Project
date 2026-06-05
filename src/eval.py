@@ -39,7 +39,7 @@ def evaluate(cfg: DictConfig):
 
     # Init Lightning DataModule to get real validation scenes
     datamodule = hydra.utils.instantiate(cfg.data)
-    datamodule.setup(stage="test")
+    datamodule.setup() # Initialize all splits
     val_set = datamodule.val_seen_set # We'll test on Seen validation first
     
     if len(val_set) == 0:
