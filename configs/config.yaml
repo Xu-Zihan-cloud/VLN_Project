@@ -3,7 +3,7 @@
 defaults:
   - _self_
   - data: alfworld
-  - model: e2e_transformer
+  - model: modular_agent
   - trainer: default
   - callbacks: default
 
