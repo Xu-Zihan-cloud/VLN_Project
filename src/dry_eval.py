@@ -1,3 +1,7 @@
+import pyrootutils
+# Setup root directory for hydra to find src.models
+pyrootutils.setup_root(__file__, indicator=".git", pythonpath=True)
+
 import os
 import json
 import hydra
