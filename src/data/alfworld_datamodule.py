@@ -164,7 +164,7 @@ class AlfWorldDataModule(LightningDataModule):
             )
             self.val_seen_set = AlfWorldDataset(
                 data_path=self.hparams.data_dir,
-                split="val_seen",
+                split="valid_seen",
                 max_seq_len=self.hparams.max_seq_len,
                 max_instr_len=self.hparams.max_instr_len
             )
@@ -172,7 +172,7 @@ class AlfWorldDataModule(LightningDataModule):
         if stage == "test" or stage is None:
             self.val_unseen_set = AlfWorldDataset(
                 data_path=self.hparams.data_dir,
-                split="val_unseen",
+                split="valid_unseen",
                 max_seq_len=self.hparams.max_seq_len,
                 max_instr_len=self.hparams.max_instr_len
             )
