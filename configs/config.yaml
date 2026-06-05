@@ -5,6 +5,7 @@ defaults:
   - data: alfworld
   - model: e2e_transformer
   - trainer: default
+  - callbacks: default
 
   # experiment configs allow for version control of specific hyperparameters
   - experiment: null

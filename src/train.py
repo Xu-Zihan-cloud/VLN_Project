@@ -35,11 +35,18 @@ def train(cfg: DictConfig):
         for _, lg_conf in cfg.logger.items():
             loggers.append(hydra.utils.instantiate(lg_conf))
 
+    # Init Callbacks
+    callbacks = []
+    if cfg.get("callbacks"):
+        for _, cb_conf in cfg.callbacks.items():
+            callbacks.append(hydra.utils.instantiate(cb_conf))
+
     # Init Lightning Trainer
     print(f"Instantiating trainer <{cfg.trainer._target_}>")
     trainer: Trainer = hydra.utils.instantiate(
         cfg.trainer, 
-        logger=loggers
+        logger=loggers,
+        callbacks=callbacks
     )
 
     # Train the model
