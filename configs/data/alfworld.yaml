@@ -1,0 +1,18 @@
+# configs/data/alfworld.yaml
+
+_target_: src.data.alfworld_datamodule.AlfWorldDataModule
+
+data_dir: ${paths.data_dir}/alfworld
+batch_size: 16 # per GPU (Total 128 with 8 GPUs)
+num_workers: 32
+pin_memory: True
+
+# Feature dimensions
+visual_feature_dim: 2048 # e.g., ResNet-50 / Mask R-CNN
+max_seq_len: 300
+max_instr_len: 100
+
+# Splits
+train_scenes: 108
+val_seen_scenes: 88
+val_unseen_scenes: 4

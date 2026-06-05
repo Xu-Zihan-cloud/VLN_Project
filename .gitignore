@@ -1,7 +1,7 @@
 configs/local/
 logs/
 outputs/
-data/
+/data/
 __pycache__/
 *.pyc
 .pytest_cache/
