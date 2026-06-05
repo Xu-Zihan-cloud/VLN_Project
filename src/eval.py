@@ -32,6 +32,10 @@ def evaluate(cfg: DictConfig):
         # Instantiate Modular Agent
         agent = hydra.utils.instantiate(cfg.model)
 
+    # Start virtual display for headless rendering
+    display = Display(visible=0, size=(1024, 768))
+    display.start()
+
     # Initialize AI2-THOR Controller
     # In practice, ALFRED/AlfWorld uses specific scene setups
     controller = Controller(
@@ -87,6 +91,11 @@ def evaluate(cfg: DictConfig):
 
     # Final tally
     final_sr = results["success_rate"] / results["episodes"]
+    logger.info(f"Final Success Rate: {final_sr:.2f}")
+
+if __name__ == "__main__":
+    evaluate()
+lts["episodes"]
     logger.info(f"Final Success Rate: {final_sr:.2f}")
 
 if __name__ == "__main__":

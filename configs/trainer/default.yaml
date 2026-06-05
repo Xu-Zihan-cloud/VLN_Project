@@ -9,9 +9,9 @@ min_epochs: 1
 max_epochs: 50
 
 # Hardware acceleration
-accelerator: gpu
-devices: 8
-strategy: ddp_find_unused_parameters_true
+accelerator: cpu
+devices: 1
+strategy: auto
 
 # Precision (16-mixed is good for Titan V)
 precision: 16-mixed

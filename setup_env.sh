@@ -1,42 +1,28 @@
 #!/bin/bash
-# setup_env.sh - Initialize environment for VLN Project
-
-# Exit on error
 set -e
 
-echo "Creating Conda environment 'vln-alfred' from environment.yaml..."
-conda env create -f environment.yaml
+echo "=== Step 1: Initializing Conda hooks ==="
+CONDA_BASE=$(conda info --base 2>/dev/null || echo "$HOME/miniconda3")
+if [ -f "$CONDA_BASE/etc/profile.d/conda.sh" ]; then
+    source "$CONDA_BASE/etc/profile.d/conda.sh"
+fi
 
-# Activate environment
-# Note: 'conda activate' might not work directly inside a script depending on shell config
-# Use 'source' or the full path to the env's bin
-CONDA_BASE=$(conda info --base)
-source "$CONDA_BASE/etc/profile.d/conda.sh"
+echo "=== Step 2: Creating Conda environment 'vln-alfred' ==="
+conda env create -f environment.yaml --force
+
+echo "=== Step 3: Activating environment ==="
 conda activate vln-alfred
 
-echo "Installing core dependencies via UV (ultra-fast pip replacement)..."
+echo "=== Step 4: Installing CPU-Optimized Dependencies via UV ==="
+# Note: Ensure system-level 'xvfb' is installed: sudo apt-get install -y xvfb
 
-# Install Torch with CUDA 12.1 (compatible with CUDA 12.0 drivers on Titan V)
-uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+# Install CPU-specific PyTorch for AVX-512 support
+uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
-# Install Lightning, Hydra, and standard ML tools
-uv pip install \
-    pytorch-lightning \
-    hydra-core \
-    hydra-colorlog \
-    hydra-optuna-sweeper \
-    wandb \
-    tensorboard
+# Install Frameworks
+uv pip install pytorch-lightning hydra-core hydra-colorlog hydra-optuna-sweeper wandb tensorboard
 
-# Install VLN Specifics
-uv pip install \
-    ai2thor \
-    alfworld \
-    openai \
-    transformers \
-    py-trees \
-    networkx \
-    opencv-python \
-    scikit-image
+# Install Simulation, LLM & Headless Tools
+uv pip install ai2thor alfworld pyvirtualdisplay opencv-python scikit-image transformers py-trees networkx openai
 
-echo "Setup complete. Please activate the environment using: conda activate vln-alfred"
+echo "=== [SUCCESS] CPU-optimized setup completed! ==="
