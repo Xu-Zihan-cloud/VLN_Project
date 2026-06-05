@@ -6,15 +6,19 @@ default_root_dir: ${paths.output_dir}
 
 # Training duration
 min_epochs: 1
-max_epochs: 50
+max_epochs: 20
 
 # Hardware acceleration
 accelerator: cpu
 devices: 1
 strategy: auto
 
-# Precision (16-mixed is good for Titan V)
-precision: 16-mixed
+# Precision (BF16 is highly optimized for modern EPYC/AVX-512)
+precision: bf16-mixed
+
+# Limit data per epoch for faster iterations
+limit_train_batches: 0.2
+limit_val_batches: 0.5
 
 # Logging and Checkpointing
 deterministic: False
