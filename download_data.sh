@@ -19,8 +19,8 @@ export ALFWORLD_DATA="$(pwd)/data/alfworld"
 mkdir -p $ALFWORLD_DATA
 
 echo "Using alfworld-download to retrieve JSON trajectories..."
-# --skip-vision because full vision data is huge; we only want JSONs for now
-alfworld-download --skip-vision
+# Use the correct data-dir argument as per the help output
+alfworld-download --data-dir "$ALFWORLD_DATA"
 
 echo "=== Step 2: Verification ==="
 echo "Data has been downloaded to: $ALFWORLD_DATA"
