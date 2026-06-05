@@ -3,6 +3,7 @@
 _target_: src.models.e2e_module.EndToEndVLNModule
 
 # Architecture parameters (Shrunk for CPU Efficiency)
+visual_feature_dim: ${data.visual_feature_dim}
 d_model: 256
 nhead: 4
 num_layers: 3
