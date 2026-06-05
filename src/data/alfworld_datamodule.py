@@ -18,9 +18,44 @@ class AlfWorldDataset(Dataset):
         self.data = self._load_data()
 
     def _load_data(self) -> List[Dict[str, Any]]:
-        # Dummy implementation for structure
-        # In practice, this would load ALFRED .json files or pre-processed .pt files
-        return []
+        """
+        Loads expert trajectories. 
+        If no real data is found, generates synthetic data for pipeline verification.
+        """
+        data = []
+        
+        # 1. Attempt to load real data if directory exists
+        split_path = os.path.join(self.data_path, self.split)
+        if os.path.exists(split_path):
+            # Recursively find all traj_data.json files
+            for root, _, files in os.walk(split_path):
+                for file in files:
+                    if file.endswith(".json"):
+                        try:
+                            with open(os.path.join(root, file), 'r') as f:
+                                traj = json.load(f)
+                                # Pre-processing would happen here
+                                # For this project, we assume traj contains 'visual_features', 'instr_tokens', etc.
+                                if "visual_features" in traj:
+                                    data.append(traj)
+                        except Exception:
+                            continue
+        
+        # 2. Synthetic Fallback: If no data found, generate 100 mock samples to verify pipeline
+        if len(data) == 0:
+            print(f"WARNING: No data found in {self.data_path}/{self.split}. Generating synthetic data for testing...")
+            for i in range(100):
+                # Mock visual features [seq_len, 2048]
+                seq_len = torch.randint(20, self.max_seq_len, (1,)).item()
+                instr_len = torch.randint(10, self.max_instr_len, (1,)).item()
+                
+                data.append({
+                    "visual_features": torch.randn(seq_len, 2048).tolist(),
+                    "instr_tokens": torch.randint(1, 5000, (instr_len,)).tolist(),
+                    "action_labels": torch.randint(0, 50, (seq_len,)).tolist()
+                })
+        
+        return data
 
     def __len__(self):
         return len(self.data)
