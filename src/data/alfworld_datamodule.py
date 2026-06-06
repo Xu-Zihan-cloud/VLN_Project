@@ -79,27 +79,27 @@ class AlfWorldDataset(Dataset):
     def __len__(self):
         return len(self.data)
 
-    def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
+    def __getitem__(self, idx: int) -> Dict[str, Any]:
         item = self.data[idx]
-        
+
         # Extract features (pre-computed visual features)
         # shape: [seq_len, visual_feature_dim]
         visual_features = torch.tensor(item['visual_features'])
-        
+
         # Instruction tokens
         instr_tokens = torch.tensor(item['instr_tokens'])
-        
+
         # Action labels (for BC training)
         action_labels = torch.tensor(item['action_labels'])
-        
+
         return {
             "visual_features": visual_features,
             "instr_tokens": instr_tokens,
             "action_labels": action_labels,
             "seq_len": torch.tensor(len(visual_features)),
-            "instr_len": torch.tensor(len(instr_tokens))
+            "instr_len": torch.tensor(len(instr_tokens)),
+            "raw_instr": item.get("raw_instr", "")
         }
-
 def alfworld_collate_fn(batch: List[Dict[str, torch.Tensor]]) -> Dict[str, torch.Tensor]:
     """
     Custom collation to handle variable length sequences with padding.
