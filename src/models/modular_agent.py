@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 from typing import List, Dict, Any, Optional
 from openai import OpenAI
 import torch
@@ -60,13 +61,18 @@ Plan:"""
                 max_tokens=self.llm_config["max_tokens"]
             )
             content = response.choices[0].message.content.strip()
-            if content.startswith("```json"):
-                content = content.replace("```json", "").replace("```", "").strip()
+            
+            # Robust JSON Extraction using Regex
+            # This looks for the first '[' and matching ']' in the response
+            match = re.search(r'\[.*\]', content, re.DOTALL)
+            if match:
+                content = match.group(0)
+            
             plan = json.loads(content)
             logger.info(f"Generated Plan: {plan}")
             return plan
         except Exception as e:
-            logger.error(f"Planning failed: {e}")
+            logger.error(f"Planning failed: {e} | Raw Output: {content if 'content' in locals() else 'None'}")
             return []
 
     def perceive(self, controller: Any) -> List[str]:

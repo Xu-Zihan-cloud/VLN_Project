@@ -49,9 +49,18 @@ def dry_evaluate(cfg: DictConfig):
         print(f"INPUT INSTRUCTION: {instruction}")
         print("-" * 50)
         
-        # In dry run, we use a standard scene graph
-        mock_scene_graph = ["mug_1", "apple_1", "microwave_1", "fridge_1", "sink_1", "table_1", "cabinet_1"]
-        
+        # Comprehensive ALFRED Object List to support all varied instructions
+        mock_scene_graph = [
+            "mug_1", "apple_1", "apple_2", "apple_slice_1", "microwave_1", "fridge_1", 
+            "sink_1", "table_1", "cabinet_1", "drawer_1", "counter_1", "bottle_1",
+            "bread_1", "bread_slice_1", "butter_knife_1", "coffee_machine_1", "cup_1",
+            "dish_sponge_1", "egg_1", "fork_1", "glassbottle_1", "kettle_1", "knife_1",
+            "ladle_1", "lettuce_1", "lettuce_slice_1", "pan_1", "pepper_shaker_1",
+            "plate_1", "pot_1", "potato_1", "potato_slice_1", "remote_control_1",
+            "salt_shaker_1", "soap_bar_1", "soap_bottle_1", "spatula_1", "spoon_1",
+            "spray_bottle_1", "statue_1", "tomato_1", "tomato_slice_1", "vase_1", "watch_1",
+            "toilet_paper_1", "toilet_paper_holder_1", "desk_lamp_1", "safe_1"
+        ]
         # Let LLM Plan
         print("Robot Brain is thinking...", end="\r")
         plan = agent.plan(instruction, mock_scene_graph)
